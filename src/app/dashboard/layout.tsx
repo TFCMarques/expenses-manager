@@ -1,4 +1,4 @@
-import { LayoutDashboard, Coins, Settings } from "lucide-react";
+import { LayoutDashboard, Coins, Settings, ArrowRightLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -37,6 +37,23 @@ export default function DashboardLayout({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-lg"
+                  aria-label="Transactions"
+                >
+                  <ArrowRightLeft className="size-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={5}>
+                Transactions
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </nav>
         <nav className="mt-auto grid gap-1 p-2">
           <TooltipProvider>
@@ -59,7 +76,7 @@ export default function DashboardLayout({
         </nav>
       </aside>
       <div className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-background px-4">
+        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-background px-8">
           <h1 className="text-xl font-semibold">Dashboard</h1>
           <ThemeToggle />
         </header>

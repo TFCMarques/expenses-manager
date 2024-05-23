@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function RecentFlows() {
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader className="px-7">
         <CardTitle>Latest Flows</CardTitle>
         <CardDescription>Recent flows from your accounts</CardDescription>
