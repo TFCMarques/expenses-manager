@@ -14,7 +14,10 @@ import {
   TableBody,
   Table,
 } from "@/components/ui/table";
-import { CardContent, Card } from "@/components/ui/card";
+import { CardContent, Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Trash } from "lucide-react";
+import EditTransactionDialog from "@/components/dashboard/transactions/edit-transaction-dialog";
 
 export default function Transactions() {
   return (
@@ -50,87 +53,59 @@ export default function Transactions() {
             <SelectItem value="2020">2020</SelectItem>
           </SelectContent>
         </Select>
-        <Button className="inline-flex h-8 items-center justify-center rounded-md bg-gray-900 px-4 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
+        <Button variant="outline" aria-label="Submit">
           Submit
         </Button>
       </div>
       <Card className="w-full">
+        <CardHeader className="px-7">
+          <CardTitle>June 2024</CardTitle>
+        </CardHeader>
         <CardContent>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-accent text-white">
               <TableRow>
                 <TableHead>Flow</TableHead>
                 <TableHead>Account</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Description</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead className="text-right">Date</TableHead>
+                <TableHead className="w-[88px]">
+                  <Button className="h-7 w-full" size="sm" variant="default">
+                    <Plus className="w-4 h-4" />
+                    <span className="pl-1">Add</span>
+                  </Button>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               <TableRow>
-                <TableCell>Expense</TableCell>
-                <TableCell>Checking</TableCell>
-                <TableCell>Groceries</TableCell>
-                <TableCell>$150.00</TableCell>
-                <TableCell>Grocery shopping</TableCell>
-                <TableCell>2023-05-01</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Income</TableCell>
-                <TableCell>Checking</TableCell>
-                <TableCell>Salary</TableCell>
-                <TableCell>$5,000.00</TableCell>
-                <TableCell>May Salary</TableCell>
-                <TableCell>2023-05-15</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Expense</TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell>Utilities</TableCell>
-                <TableCell>$200.00</TableCell>
-                <TableCell>Electricity bill</TableCell>
-                <TableCell>2023-05-20</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Income</TableCell>
-                <TableCell>Savings</TableCell>
-                <TableCell>Interest</TableCell>
-                <TableCell>$50.00</TableCell>
-                <TableCell>Monthly interest</TableCell>
-                <TableCell>2023-05-31</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Expense</TableCell>
-                <TableCell>Checking</TableCell>
-                <TableCell>Dining</TableCell>
-                <TableCell>$75.00</TableCell>
-                <TableCell>Dinner with friends</TableCell>
-                <TableCell>2023-06-01</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Income</TableCell>
-                <TableCell>Checking</TableCell>
-                <TableCell>Freelance</TableCell>
-                <TableCell>$1,500.00</TableCell>
-                <TableCell>June freelance work</TableCell>
-                <TableCell>2023-06-15</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Expense</TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell>Shopping</TableCell>
+                <TableCell>
+                  <div className="font-medium">Expense</div>
+                </TableCell>
+                <TableCell>
+                  <div className="font-medium">Checking</div>
+                </TableCell>
+                <TableCell>
+                  <Badge className="text-xs" variant="secondary">
+                    Utilities
+                  </Badge>
+                </TableCell>
                 <TableCell>$250.00</TableCell>
-                <TableCell>New clothes</TableCell>
-                <TableCell>2023-06-20</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Income</TableCell>
-                <TableCell>Savings</TableCell>
-                <TableCell>Interest</TableCell>
-                <TableCell>$50.00</TableCell>
-                <TableCell>June interest</TableCell>
-                <TableCell>2023-06-30</TableCell>
+                <TableCell>
+                  <div className="font-medium">Eletricity Bill</div>
+                </TableCell>
+                <TableCell className="text-right">2023-06-23</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <EditTransactionDialog />
+                    <Button size="icon" variant="ghost">
+                      <Trash className="h-4 w-4" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

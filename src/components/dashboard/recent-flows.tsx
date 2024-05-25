@@ -19,8 +19,8 @@ export default function RecentFlows() {
   return (
     <Card className="w-full">
       <CardHeader className="px-7">
-        <CardTitle>Latest Flows</CardTitle>
-        <CardDescription>Recent flows from your accounts</CardDescription>
+        <CardTitle>Recent Flows</CardTitle>
+        <CardDescription>Latest flows from your accounts</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>

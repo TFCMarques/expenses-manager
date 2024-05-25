@@ -5,7 +5,7 @@ import {
   Coins,
   LayoutDashboard,
   LucideIcon,
-  UserRound,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,9 +47,9 @@ const navItems: NavItem[] = [
     icon: ArrowRightLeft,
   },
   {
-    label: "Account",
-    href: "/dashboard/account",
-    icon: UserRound,
+    label: "Settings",
+    href: "/dashboard/settings",
+    icon: Settings,
   },
 ];
 
