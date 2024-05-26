@@ -16,12 +16,35 @@ import {
 } from "@/components/ui/table";
 import { CardContent, Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash } from "lucide-react";
-import EditTransactionDialog from "@/components/dashboard/transactions/edit-transaction-dialog";
+import EditTransactionDialog from "@/components/dashboard/transactions/dialogs/edit-transaction-dialog";
+import DeleteTransactionDialog from "@/components/dashboard/transactions/dialogs/delete-transaction-dialog";
+import AddTransactionDialog from "@/components/dashboard/transactions/dialogs/add-transaction-dialog";
+import { isEmpty } from "lodash";
+import TransactionsEmptyState from "@/components/dashboard/transactions/empty-states/transactions-empty-state";
 
-export default function Transactions() {
+interface Transaction {
+  flow: string;
+  account: string;
+  category: string;
+  amount: number;
+  description: string;
+  date: Date;
+}
+
+const Transactions = () => {
+  const transactions: Transaction[] = [
+    {
+      flow: "Expense",
+      account: "Checking",
+      category: "Dining",
+      amount: 25,
+      description: "McDonald's",
+      date: new Date(),
+    },
+  ];
+
   return (
-    <main className="flex flex-col gap-8 p-8">
+    <main className="flex flex-col gap-8 p-8 h-full">
       <div className="flex gap-4">
         <Select>
           <SelectTrigger>
@@ -57,60 +80,68 @@ export default function Transactions() {
           Submit
         </Button>
       </div>
-      <Card className="w-full">
-        <CardHeader className="px-7">
-          <CardTitle>June 2024</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader className="bg-accent text-white">
-              <TableRow>
-                <TableHead>Flow</TableHead>
-                <TableHead>Account</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead className="text-right">Date</TableHead>
-                <TableHead className="w-[88px]">
-                  <Button className="h-7 w-full" size="sm" variant="default">
-                    <Plus className="w-4 h-4" />
-                    <span className="pl-1">Add</span>
-                  </Button>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <div className="font-medium">Expense</div>
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium">Checking</div>
-                </TableCell>
-                <TableCell>
-                  <Badge className="text-xs" variant="secondary">
-                    Utilities
-                  </Badge>
-                </TableCell>
-                <TableCell>$250.00</TableCell>
-                <TableCell>
-                  <div className="font-medium">Eletricity Bill</div>
-                </TableCell>
-                <TableCell className="text-right">2023-06-23</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <EditTransactionDialog />
-                    <Button size="icon" variant="ghost">
-                      <Trash className="h-4 w-4" />
-                      <span className="sr-only">Delete</span>
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      {isEmpty(transactions) ? (
+        <TransactionsEmptyState />
+      ) : (
+        <Card className="w-full">
+          <CardHeader className="px-7">
+            <CardTitle>June 2024</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader className="bg-accent text-white">
+                <TableRow>
+                  <TableHead>Flow</TableHead>
+                  <TableHead>Account</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead className="text-right">Date</TableHead>
+                  <TableHead className="w-[88px]">
+                    <AddTransactionDialog />
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {transactions.map((transaction, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <div className="font-medium">{transaction.flow}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{transaction.account}</div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className="text-xs" variant="secondary">
+                          {transaction.category}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{transaction.amount}€</TableCell>
+                      <TableCell>
+                        <div className="font-medium">
+                          {transaction.description}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {transaction.date.toString()}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <EditTransactionDialog />
+                          <DeleteTransactionDialog />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
     </main>
   );
-}
+};
+
+export default Transactions;

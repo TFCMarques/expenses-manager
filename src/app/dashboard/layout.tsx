@@ -131,7 +131,7 @@ export default function DashboardLayout({
           </Breadcrumb>
           <ThemeToggle />
         </header>
-        <main>{children}</main>
+        <>{children}</>
       </div>
     </div>
   );

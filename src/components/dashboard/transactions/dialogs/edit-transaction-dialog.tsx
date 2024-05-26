@@ -6,6 +6,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -133,10 +134,14 @@ export default function EditTransactionDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
-          <div>
-            <Button variant="outline">Cancel</Button>
-          </div>
+          <Button variant="default" type="submit">
+            Save changes
+          </Button>
+          <DialogClose asChild>
+            <Button variant="secondary" type="button">
+              Cancel
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
