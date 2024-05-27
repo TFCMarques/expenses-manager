@@ -121,7 +121,7 @@ export default function AddTransactionDialog() {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button className="w-full text-left" variant="outline">
-                    2023-05-01
+                    27-05-2024
                     <CalendarDays className="ml-auto h-4 w-4" />
                   </Button>
                 </PopoverTrigger>

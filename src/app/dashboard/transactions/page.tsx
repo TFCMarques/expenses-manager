@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   SelectValue,
@@ -21,6 +23,11 @@ import DeleteTransactionDialog from "@/components/dashboard/transactions/dialogs
 import AddTransactionDialog from "@/components/dashboard/transactions/dialogs/add-transaction-dialog";
 import { isEmpty } from "lodash";
 import TransactionsEmptyState from "@/components/dashboard/transactions/empty-states/transactions-empty-state";
+import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 
 interface Transaction {
   flow: string;
@@ -31,54 +38,96 @@ interface Transaction {
   date: Date;
 }
 
+const FormSchema = z.object({
+  month: z.number(),
+  year: z.number(),
+});
+
 const Transactions = () => {
-  const transactions: Transaction[] = [
-    {
-      flow: "Expense",
-      account: "Checking",
-      category: "Dining",
-      amount: 25,
-      description: "McDonald's",
-      date: new Date(),
-    },
-  ];
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    new Date().getMonth() + 1
+  );
+  const [selectedYear, setSelectedYear] = useState<number>(
+    new Date().getFullYear()
+  );
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const response = await fetch(
+        `/api/transactions?month=${selectedMonth}&year=${selectedYear}`,
+        { method: "GET" }
+      );
+      const data = await response.json();
+      setTransactions(data);
+    };
+
+    fetchTransactions();
+  }, [selectedMonth, selectedYear]);
+
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setSelectedMonth(data.month);
+    setSelectedYear(data.year);
+  };
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
 
   return (
     <main className="flex flex-col gap-8 p-8 h-full">
       <div className="flex gap-4">
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Month" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">January</SelectItem>
-            <SelectItem value="2">February</SelectItem>
-            <SelectItem value="3">March</SelectItem>
-            <SelectItem value="4">April</SelectItem>
-            <SelectItem value="5">May</SelectItem>
-            <SelectItem value="6">June</SelectItem>
-            <SelectItem value="7">July</SelectItem>
-            <SelectItem value="8">August</SelectItem>
-            <SelectItem value="9">September</SelectItem>
-            <SelectItem value="10">October</SelectItem>
-            <SelectItem value="11">November</SelectItem>
-            <SelectItem value="12">December</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Year" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="2023">2023</SelectItem>
-            <SelectItem value="2022">2022</SelectItem>
-            <SelectItem value="2021">2021</SelectItem>
-            <SelectItem value="2020">2020</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button variant="outline" aria-label="Submit">
-          Submit
-        </Button>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              name="month"
+              defaultValue={1}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">January</SelectItem>
+                      <SelectItem value="2">February</SelectItem>
+                      <SelectItem value="3">March</SelectItem>
+                      <SelectItem value="4">April</SelectItem>
+                      <SelectItem value="5">May</SelectItem>
+                      <SelectItem value="6">June</SelectItem>
+                      <SelectItem value="7">July</SelectItem>
+                      <SelectItem value="8">August</SelectItem>
+                      <SelectItem value="9">September</SelectItem>
+                      <SelectItem value="10">October</SelectItem>
+                      <SelectItem value="11">November</SelectItem>
+                      <SelectItem value="12">December</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Year" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2023">2023</SelectItem>
+                <SelectItem value="2022">2022</SelectItem>
+                <SelectItem value="2021">2021</SelectItem>
+                <SelectItem value="2020">2020</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" aria-label="Submit">
+              Submit
+            </Button>
+          </form>
+        </Form>
       </div>
       {isEmpty(transactions) ? (
         <TransactionsEmptyState />
