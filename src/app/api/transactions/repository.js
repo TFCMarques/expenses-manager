@@ -33,7 +33,10 @@ export async function deleteTransaction(id) {
 export async function getTransactionsByMonthAndYear(month, year) {
   return db
     .prepare(
-      "SELECT * FROM transactions WHERE strftime('%m', date) = ? AND strftime('%Y', date) = ?"
+      `
+    SELECT * FROM transactions
+    WHERE strftime('%m', date) = @month AND strftime('%Y', date) = @year
+  `
     )
-    .all(month, year);
+    .all({ month: String(month).padStart(2, "0"), year });
 }
